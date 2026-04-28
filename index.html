@@ -269,6 +269,211 @@
     opacity: 0.85;
   }
 
+  /* Personalized greeting */
+  .greeting {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    color: var(--deep);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  .greeting .name {
+    background: var(--deep);
+    color: var(--lime);
+    padding: 0.1em 0.5em;
+    border-radius: 8px;
+    display: inline-block;
+    transform: rotate(2deg);
+    margin: 0 0.2em;
+  }
+
+  .change-name {
+    background: none;
+    border: 2px dashed var(--deep);
+    color: var(--deep);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+  }
+  .change-name:hover {
+    background: var(--deep);
+    color: var(--salt);
+  }
+
+  /* Olivia's special message */
+  .olivia-card {
+    background: linear-gradient(135deg, #ffeef5 0%, #ffd4e5 100%);
+    border: 4px solid var(--pink);
+    border-radius: 20px;
+    padding: 1.3rem 1.8rem;
+    margin: 1.2rem auto;
+    max-width: 580px;
+    box-shadow: 5px 5px 0 var(--pink);
+    transform: rotate(0.6deg);
+    position: relative;
+  }
+
+  .olivia-card::before {
+    content: '🌸';
+    position: absolute;
+    top: -18px;
+    left: -18px;
+    font-size: 2.2rem;
+    background: var(--salt);
+    border: 3px solid var(--pink);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-15deg);
+  }
+
+  .olivia-card .label-tag {
+    font-family: 'Bungee', cursive;
+    font-size: 0.7rem;
+    color: var(--pink);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .olivia-card p {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    color: var(--deep);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  /* Name entry modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 31, 23, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fade-in 0.4s ease-out;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .modal {
+    background: var(--salt);
+    border: 5px solid var(--deep);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 10px 10px 0 var(--lime-dark);
+    transform: rotate(-1deg);
+    animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes pop-in {
+    from { transform: rotate(-1deg) scale(0.7); opacity: 0; }
+    to { transform: rotate(-1deg) scale(1); opacity: 1; }
+  }
+
+  .modal h2 {
+    font-family: 'Bungee Shade', cursive;
+    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+    color: var(--deep);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal .modal-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: var(--deep);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+
+  .modal input {
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    border: 3px solid var(--deep);
+    border-radius: 12px;
+    background: var(--tequila);
+    color: var(--deep);
+    margin-bottom: 1rem;
+    outline: none;
+    text-align: center;
+  }
+
+  .modal input:focus {
+    background: var(--salt);
+    box-shadow: 0 0 0 4px var(--lime);
+  }
+
+  .modal button {
+    background: var(--lime);
+    border: 4px solid var(--deep);
+    border-radius: 12px;
+    padding: 0.8rem 2rem;
+    font-family: 'Bungee', cursive;
+    font-size: 1rem;
+    color: var(--deep);
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--deep);
+    transition: all 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .modal button:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 var(--deep);
+  }
+  .modal button:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 var(--deep);
+  }
+
+  .modal .skip {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: var(--deep);
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    text-decoration: underline;
+    margin-top: 0.5rem;
+    padding: 0.3rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .modal .skip:hover {
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+  }
+
+  .hidden { display: none !important; }
+
   /* Party mode when countdown hits zero */
   .party h1 {
     animation: party-shake 0.4s ease-in-out infinite;
@@ -327,7 +532,21 @@
 <div class="floater salt-2">🧂</div>
 <div class="floater cactus">🌵</div>
 
+<div class="modal-backdrop hidden" id="modal">
+  <div class="modal">
+    <h2>WHO GOES THERE?</h2>
+    <p class="modal-sub">drop your name to claim your margarita</p>
+    <input type="text" id="nameInput" placeholder="your name..." maxlength="30" autocomplete="off">
+    <div>
+      <button id="submitName">Lock it in 🍹</button>
+    </div>
+    <button class="skip" id="skipName">nah, I'm shy</button>
+  </div>
+</div>
+
 <div class="container" id="container">
+
+  <div class="greeting hidden" id="greeting">hey there, <span class="name" id="nameSlot">friend</span> 👋</div>
 
   <div class="eyebrow">attention thirsty colleagues</div>
 
@@ -373,7 +592,14 @@
     <p id="quip">Hydrate now. Future-you will thank present-you. Present-you will not care.</p>
   </div>
 
+  <div class="olivia-card" id="oliviaCard">
+    <span class="label-tag">🌸 special menu item 🌸</span>
+    <p>For Olivia: a 0.0% margarita with all the lime, all the salt, and zero of the regret. The blender does not discriminate. 🍋‍🟩</p>
+  </div>
+
   <div class="stamp">🌶️ certified spicy 🌶️</div>
+
+  <button class="change-name" id="changeName">change name</button>
 
   <p class="footer-note">see you there. bring your A-game (and your B-tolerance) 🍹</p>
 
@@ -382,7 +608,53 @@
 <script>
   const $ = id => document.getElementById(id);
 
-  // Pool of silly rotating quips
+  // ============== NAME ENTRY ==============
+  const modal = $('modal');
+  const nameInput = $('nameInput');
+  const greeting = $('greeting');
+  const nameSlot = $('nameSlot');
+  const oliviaCard = $('oliviaCard');
+
+  // Show modal on load
+  modal.classList.remove('hidden');
+  setTimeout(() => nameInput.focus(), 500);
+
+  function applyName(rawName) {
+    const name = (rawName || '').trim();
+    if (name) {
+      // Capitalize first letter
+      const display = name.charAt(0).toUpperCase() + name.slice(1);
+      nameSlot.textContent = display;
+      greeting.classList.remove('hidden');
+
+      // Olivia easter egg: hide the "for Olivia" card if she's the one looking
+      if (name.toLowerCase() === 'olivia') {
+        oliviaCard.querySelector('.label-tag').textContent = '🌸 yes, you, olivia 🌸';
+        oliviaCard.querySelector('p').textContent =
+          "Hi Olivia! Your 0.0% margarita is locked in — all the lime, all the salt, zero of the regret. We've got you. 🍋‍🟩";
+      }
+
+      // Personalized quip for the message card
+      QUIPS.unshift(`${display}, the limes have been notified. They're nervous.`);
+      QUIPS.unshift(`Calendar cleared, ${display}? Good. Good.`);
+    }
+    modal.classList.add('hidden');
+  }
+
+  $('submitName').addEventListener('click', () => applyName(nameInput.value));
+  $('skipName').addEventListener('click', () => applyName(''));
+  nameInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyName(nameInput.value);
+  });
+
+  // Change name button
+  $('changeName').addEventListener('click', () => {
+    nameInput.value = '';
+    modal.classList.remove('hidden');
+    setTimeout(() => nameInput.focus(), 100);
+  });
+
+  // ============== QUIPS ==============
   const QUIPS = [
     "Hydrate now. Future-you will thank present-you. Present-you will not care.",
     "Limes have been notified. They're nervous.",
@@ -408,7 +680,10 @@
       $('hours').textContent = '00';
       $('minutes').textContent = '00';
       $('seconds').textContent = '00';
-      $('title').innerHTML = "IT'S<br>MARGARITA<br>O'CLOCK";
+      const partyName = nameSlot.textContent && nameSlot.textContent !== 'friend'
+        ? `${nameSlot.textContent.toUpperCase()},<br>IT'S MARGARITA<br>O'CLOCK`
+        : "IT'S<br>MARGARITA<br>O'CLOCK";
+      $('title').innerHTML = partyName;
       $('quip').textContent = "🍹 GO. NOW. THE LIMES HAVE WAITED LONG ENOUGH. 🍹";
       document.getElementById('container').classList.add('party');
       if (!window._confettiStarted) { startConfetti(); window._confettiStarted = true; }
