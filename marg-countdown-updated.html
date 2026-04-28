@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍹 Margarita Countdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Bungee&family=Caveat:wght@400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     ⚠️  EDIT THIS LINE — set your happy hour date & time
+     Format: 'YYYY-MM-DDTHH:MM:SS' (24-hour, local time)
+     ========================================================= */
+  </style>
+<script>
+  // ⚠️ EDIT ME ⚠️  — change to your happy hour date/time
+  const HAPPY_HOUR = new Date('2026-05-01T16:30:00');
+
+  // Optional: tweak the headline if you want
+  const TEAM_NAME = 'team';
+</script>
+<style>
+  :root {
+    --lime: #c6ff3d;
+    --lime-dark: #9bd416;
+    --salt: #fffef0;
+    --tequila: #f5e6a8;
+    --citrus: #ffb627;
+    --sunset: #ff6b35;
+    --pink: #ff5c8a;
+    --deep: #1a3d2e;
+    --night: #0d1f17;
+    --shadow: rgba(13, 31, 23, 0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background:
+      radial-gradient(ellipse at 20% 0%, #ff8c42 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 0%, #ff5c8a 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, #ffb627 0%, transparent 60%),
+      linear-gradient(180deg, #ff6b35 0%, #ff8c42 30%, #ffb627 60%, #ffd166 100%);
+    color: var(--deep);
+    min-height: 100vh;
+    position: relative;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.4;
+    z-index: 1;
+  }
+
+  /* Floating limes & salt */
+  .floater {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.85;
+  }
+  .floater.lime-1 { top: 8%; left: 6%; font-size: 3rem; animation: bob 6s ease-in-out infinite; }
+  .floater.lime-2 { top: 70%; right: 5%; font-size: 2.5rem; animation: bob 7s ease-in-out infinite reverse; }
+  .floater.lime-3 { top: 40%; left: 92%; font-size: 2rem; animation: bob 5s ease-in-out infinite; }
+  .floater.salt-1 { top: 20%; right: 12%; font-size: 1.5rem; animation: spin 12s linear infinite; }
+  .floater.salt-2 { bottom: 15%; left: 10%; font-size: 1.2rem; animation: spin 9s linear infinite reverse; }
+  .floater.cactus { bottom: 8%; right: 8%; font-size: 3rem; animation: sway 8s ease-in-out infinite; transform-origin: bottom center; }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-25px) rotate(15deg); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes sway {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .eyebrow {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    color: var(--deep);
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .eyebrow::before { content: '✨ '; }
+  .eyebrow::after { content: ' ✨'; }
+
+  h1 {
+    font-family: 'Bungee Shade', cursive;
+    font-size: clamp(2.8rem, 9vw, 6rem);
+    line-height: 0.95;
+    color: var(--salt);
+    text-shadow:
+      4px 4px 0 var(--deep),
+      8px 8px 0 var(--lime-dark);
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.02em;
+    transform: rotate(-1deg);
+  }
+
+  .subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+    color: var(--deep);
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    margin: 2rem auto;
+    max-width: 700px;
+  }
+
+  .unit {
+    background: linear-gradient(180deg, var(--lime) 0%, var(--lime-dark) 100%);
+    border: 4px solid var(--deep);
+    border-radius: 18px;
+    padding: 1.2rem 0.5rem;
+    box-shadow:
+      0 6px 0 var(--deep),
+      0 8px 20px var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .unit:hover { transform: translateY(-3px); }
+
+  .unit::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    height: 30%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%);
+    border-radius: 12px 12px 50% 50%;
+    pointer-events: none;
+  }
+
+  .number {
+    font-family: 'Bungee', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--deep);
+    line-height: 1;
+    display: block;
+    position: relative;
+    z-index: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.65rem, 1.4vw, 0.85rem);
+    color: var(--deep);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    margin-top: 0.4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .glass-section {
+    margin: 2.5rem auto 1.5rem;
+    position: relative;
+  }
+
+  .glass {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .glass svg { width: 100%; height: 100%; filter: drop-shadow(0 8px 16px var(--shadow)); }
+
+  .message-card {
+    background: var(--salt);
+    border: 4px solid var(--deep);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem auto;
+    max-width: 600px;
+    box-shadow: 6px 6px 0 var(--deep);
+    transform: rotate(-0.8deg);
+    position: relative;
+  }
+
+  .message-card::after {
+    content: '🧂';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 2rem;
+    background: var(--citrus);
+    border: 3px solid var(--deep);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(15deg);
+  }
+
+  .message-card p {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    color: var(--deep);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .stamp {
+    display: inline-block;
+    font-family: 'Bungee', cursive;
+    font-size: clamp(0.8rem, 1.8vw, 1rem);
+    color: var(--sunset);
+    border: 3px dashed var(--sunset);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    transform: rotate(2deg);
+    margin-top: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-note {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--deep);
+    margin-top: 2rem;
+    opacity: 0.85;
+  }
+
+  /* Party mode when countdown hits zero */
+  .party h1 {
+    animation: party-shake 0.4s ease-in-out infinite;
+  }
+
+  @keyframes party-shake {
+    0%, 100% { transform: rotate(-1deg) translate(0, 0); }
+    25% { transform: rotate(1deg) translate(-2px, 2px); }
+    50% { transform: rotate(-2deg) translate(2px, -1px); }
+    75% { transform: rotate(2deg) translate(-1px, 1px); }
+  }
+
+  .confetti {
+    position: fixed;
+    top: -20px;
+    width: 12px;
+    height: 12px;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); }
+  }
+
+  /* Mobile */
+  @media (max-width: 540px) {
+    .countdown { gap: 0.5rem; }
+    .unit { padding: 0.9rem 0.3rem; border-width: 3px; }
+    .message-card { padding: 1.2rem 1.4rem; }
+    .floater { display: none; }
+    .floater.lime-1, .floater.cactus { display: block; }
+  }
+
+  /* Subtle entrance */
+  .container > * { animation: rise 0.8s ease-out backwards; }
+  .container > *:nth-child(1) { animation-delay: 0.0s; }
+  .container > *:nth-child(2) { animation-delay: 0.1s; }
+  .container > *:nth-child(3) { animation-delay: 0.2s; }
+  .container > *:nth-child(4) { animation-delay: 0.3s; }
+  .container > *:nth-child(5) { animation-delay: 0.4s; }
+  .container > *:nth-child(6) { animation-delay: 0.5s; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="floater lime-1">🍋‍🟩</div>
+<div class="floater lime-2">🍋‍🟩</div>
+<div class="floater lime-3">🍋‍🟩</div>
+<div class="floater salt-1">🧂</div>
+<div class="floater salt-2">🧂</div>
+<div class="floater cactus">🌵</div>
+
+<div class="container" id="container">
+
+  <div class="eyebrow">attention thirsty colleagues</div>
+
+  <h1 id="title">MARGARITA<br>COUNTDOWN</h1>
+
+  <p class="subtitle">the official countdown to questionably-blended bliss</p>
+
+  <div class="glass-section">
+    <div class="glass">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Glass stem -->
+        <rect x="95" y="150" width="10" height="30" fill="#fffef0" stroke="#1a3d2e" stroke-width="3"/>
+        <ellipse cx="100" cy="185" rx="35" ry="6" fill="#fffef0" stroke="#1a3d2e" stroke-width="3"/>
+        <!-- Glass cup (V-shape margarita glass) -->
+        <path d="M 40 50 L 100 150 L 160 50 Z" fill="rgba(198, 255, 61, 0.6)" stroke="#1a3d2e" stroke-width="4"/>
+        <!-- Salt rim -->
+        <path d="M 40 50 Q 50 45 60 50 Q 70 45 80 50 Q 90 45 100 50 Q 110 45 120 50 Q 130 45 140 50 Q 150 45 160 50"
+              fill="none" stroke="#fffef0" stroke-width="6" stroke-linecap="round"/>
+        <path d="M 40 50 Q 50 45 60 50 Q 70 45 80 50 Q 90 45 100 50 Q 110 45 120 50 Q 130 45 140 50 Q 150 45 160 50"
+              fill="none" stroke="#1a3d2e" stroke-width="2" stroke-dasharray="2,3"/>
+        <!-- Liquid surface highlight -->
+        <ellipse cx="100" cy="55" rx="55" ry="4" fill="rgba(255,255,255,0.5)"/>
+        <!-- Lime wedge -->
+        <g transform="translate(125, 35) rotate(20)">
+          <path d="M 0 0 Q 15 -8 30 0 L 30 5 Q 15 -3 0 5 Z" fill="#9bd416" stroke="#1a3d2e" stroke-width="2"/>
+          <line x1="5" y1="2" x2="25" y2="2" stroke="#fffef0" stroke-width="1"/>
+        </g>
+        <!-- Straw -->
+        <line x1="115" y1="35" x2="135" y2="120" stroke="#ff5c8a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="115" y1="35" x2="135" y2="120" stroke="#fffef0" stroke-width="2" stroke-dasharray="6,6"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="countdown" id="countdown" role="timer" aria-label="Time until margaritas">
+    <div class="unit"><span class="number" id="days">--</span><div class="label">Days</div></div>
+    <div class="unit"><span class="number" id="hours">--</span><div class="label">Hours</div></div>
+    <div class="unit"><span class="number" id="minutes">--</span><div class="label">Minutes</div></div>
+    <div class="unit"><span class="number" id="seconds">--</span><div class="label">Seconds</div></div>
+  </div>
+
+  <div class="message-card">
+    <p id="quip">Hydrate now. Future-you will thank present-you. Present-you will not care.</p>
+  </div>
+
+  <div class="stamp">🌶️ certified spicy 🌶️</div>
+
+  <p class="footer-note">see you there. bring your A-game (and your B-tolerance) 🍹</p>
+
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  // Pool of silly rotating quips
+  const QUIPS = [
+    "Hydrate now. Future-you will thank present-you. Present-you will not care.",
+    "Limes have been notified. They're nervous.",
+    "The salt is salting. The tequila is tequila-ing.",
+    "Productivity is a social construct, but happy hour is a calendar event.",
+    "Studies show* that countdowns improve morale by 400%. (*one study, by me, just now)",
+    "If a margarita falls in the forest and no one Slacks about it, did it even happen?",
+    "Your blender is stretching. It's been training for this.",
+    "OOO message drafted: 'In a meeting with Mr. Cuervo.'",
+    "Spreadsheet Cole logs off. Margarita Cole logs on.",
+    "The vibes are inbound. ETA below."
+  ];
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function update() {
+    const now = new Date();
+    const diff = HAPPY_HOUR - now;
+
+    if (diff <= 0) {
+      // PARTY TIME
+      $('days').textContent = '00';
+      $('hours').textContent = '00';
+      $('minutes').textContent = '00';
+      $('seconds').textContent = '00';
+      $('title').innerHTML = "IT'S<br>MARGARITA<br>O'CLOCK";
+      $('quip').textContent = "🍹 GO. NOW. THE LIMES HAVE WAITED LONG ENOUGH. 🍹";
+      document.getElementById('container').classList.add('party');
+      if (!window._confettiStarted) { startConfetti(); window._confettiStarted = true; }
+      return;
+    }
+
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    $('days').textContent = pad(days);
+    $('hours').textContent = pad(hours);
+    $('minutes').textContent = pad(minutes);
+    $('seconds').textContent = pad(seconds);
+  }
+
+  // Rotate quips every 7 seconds
+  let quipIdx = 0;
+  setInterval(() => {
+    if (document.getElementById('container').classList.contains('party')) return;
+    quipIdx = (quipIdx + 1) % QUIPS.length;
+    const el = $('quip');
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = QUIPS[quipIdx];
+      el.style.transition = 'opacity 0.4s';
+      el.style.opacity = '1';
+    }, 400);
+  }, 7000);
+
+  function startConfetti() {
+    const colors = ['#c6ff3d', '#ffb627', '#ff5c8a', '#ff6b35', '#fffef0'];
+    setInterval(() => {
+      for (let i = 0; i < 3; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        c.style.animation = `fall ${2 + Math.random() * 2}s linear forwards`;
+        c.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }, 200);
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+
+</body>
+</html>
